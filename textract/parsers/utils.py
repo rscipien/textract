@@ -84,7 +84,9 @@ class ShellParser(BaseParser):
 
         # pipe.wait() ends up hanging on large files. using
         # pipe.communicate appears to avoid this issue
-        stdout, stderr = pipe.communicate()
+        #stdout, stderr = pipe.communicate()
+        (cmd_stdout_bytes, cmd_stderr_bytes) = pipe.communicate(''.encode('utf-8'))
+        stdout, stderr = cmd_stdout_bytes.decode('utf-8'), cmd_stderr_bytes.decode('utf-8')
 
         # if pipe is busted, raise an error (unlike Fabric)
         if pipe.returncode != 0:
